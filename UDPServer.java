@@ -42,9 +42,7 @@ public class UDPServer {
 				DatagramPacket request = new DatagramPacket(buffer, buffer.length);
 				aSocket.receive(request);
 				String frase = new String(request.getData());
-				System.out.println("frase:"+ frase);
 				String aux = new String( numeroDeVocales(frase) +"");
-				System.out.println("numero:"+ aux);
 				byte [] v = aux.getBytes();
 				DatagramPacket reply = new DatagramPacket(v, aux.length(), request.getAddress(), request.getPort());
 				aSocket.send(reply);
