@@ -16,7 +16,7 @@ public class UDPClient {
             byte[] buffer = new byte[1000];
             DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
             aSocket.receive(reply);
-            System.out.println("El número de vocales es: " + new String(reply.getData()));
+            System.out.println("El numero de vocales es: " + new String(reply.getData()));
         } catch (SocketException e) {
             System.out.println("Socket: " + e.getMessage());
         } catch (IOException e) {

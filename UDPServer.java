@@ -4,12 +4,11 @@ import javax.print.DocFlavor.BYTE_ARRAY;
 
 import java.io.*;
 
-public class UDPServer{
+public class UDPServer {
 
-	public static byte []numeroDeVocales(byte []frase) {
-		String oracion = new String(frase);
+	private static int numeroDeVocales(String frase) {
 		int res = 0;
-		String fraseMin = oracion.toLowerCase();
+		String fraseMin = frase.toLowerCase();
 
 		for (int i = 0; i < fraseMin.length(); ++i) {
 			switch (fraseMin.charAt(i)) {
@@ -29,27 +28,34 @@ public class UDPServer{
 					// se ignoran las dem�s letras
 			}
 		}
-		String aux = String.valueOf(res);
-		byte []auxi = aux.getBytes();
-		return auxi;
+		return res;
 	}
-    public static void main(String args[]){ 
-    	DatagramSocket aSocket = null;
-		try{
-	    	aSocket = new DatagramSocket(6789);
-					// create socket at agreed port
-			byte[] buffer = new byte[1000];
- 			while(true){
- 				DatagramPacket request = new DatagramPacket(buffer, buffer.length);
-  				aSocket.receive(request);  
-				byte []v = numeroDeVocales(request.getData());
-				String aux = new String(v);
-    			DatagramPacket reply = new DatagramPacket(v, aux.length(), 
-    				request.getAddress(), request.getPort());
-    			aSocket.send(reply);
-    		}
-		}catch (SocketException e){System.out.println("Socket: " + e.getMessage());
-		}catch (IOException e) {System.out.println("IO: " + e.getMessage());
-		}finally {if(aSocket != null) aSocket.close();}
-    }
+
+	public static void main(String args[]) {
+		DatagramSocket aSocket = null;
+		try {
+			aSocket = new DatagramSocket(6789);
+			// create socket at agreed port
+			
+			while (true) {
+				byte[] buffer = new byte[1000];
+				DatagramPacket request = new DatagramPacket(buffer, buffer.length);
+				aSocket.receive(request);
+				String frase = new String(request.getData());
+				System.out.println("frase:"+ frase);
+				String aux = new String( numeroDeVocales(frase) +"");
+				System.out.println("numero:"+ aux);
+				byte [] v = aux.getBytes();
+				DatagramPacket reply = new DatagramPacket(v, aux.length(), request.getAddress(), request.getPort());
+				aSocket.send(reply);
+			}
+		} catch (SocketException e) {
+			System.out.println("Socket: " + e.getMessage());
+		} catch (IOException e) {
+			System.out.println("IO: " + e.getMessage());
+		} finally {
+			if (aSocket != null)
+				aSocket.close();
+		}
+	}
 }
