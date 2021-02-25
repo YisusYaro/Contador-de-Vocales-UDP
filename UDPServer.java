@@ -36,12 +36,15 @@ public class UDPServer {
 		try {
 			aSocket = new DatagramSocket(6789);
 			// create socket at agreed port
-			byte[] buffer = new byte[1000];
+			
 			while (true) {
+				byte[] buffer = new byte[1000];
 				DatagramPacket request = new DatagramPacket(buffer, buffer.length);
 				aSocket.receive(request);
 				String frase = new String(request.getData());
+				System.out.println("frase:"+ frase);
 				String aux = new String( numeroDeVocales(frase) +"");
+				System.out.println("numero:"+ aux);
 				byte [] v = aux.getBytes();
 				DatagramPacket reply = new DatagramPacket(v, aux.length(), request.getAddress(), request.getPort());
 				aSocket.send(reply);
